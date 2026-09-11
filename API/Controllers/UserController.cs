@@ -69,35 +69,18 @@ namespace API.Controllers
                     _db.Users.Add(newUser);
                     _db.SaveChanges();
 
-                    var u = _db.Users.FirstOrDefault(x => x.Email == user.Email);
 
-                    if(u != null)
+
+                    var tokenHandler = new JwtSecurityTokenHandler();
+
+                    var token = tokenHandler.CreateToken(_jwt.GenerateToken(newUser));
+                    var tokenString = tokenHandler.WriteToken(token);
+
+                    return Ok(new
                     {
-                        var tokenHandler = new JwtSecurityTokenHandler();
-
-                        var token = tokenHandler.CreateToken(_jwt.GenerateToken(u));
-                        var tokenString = tokenHandler.WriteToken(token);
-
-                        return Ok(new
-                        {
-                            token = tokenString
-                        });
-                    }
+                        token = tokenString
+                    });
                 }
-
-                return Ok(new
-                {
-                    message = "The user already exists.",
-                    user = new
-                    {
-                        newUser.Username,
-                        newUser.Email,
-                        newUser.Age,
-                        newUser.Gender,
-                        newUser.Weight,
-                        newUser.Height
-                    }
-                });
 
             }
             catch (Exception ex)
@@ -111,8 +94,11 @@ namespace API.Controllers
         {
             if (!string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.Password))
             {
-                var dbUser = _db.Users.FirstOrDefault(u => u.Email == user.Email && u.Password == BCrypt.Net.BCrypt.HashPassword(user.Password));
-                if(dbUser != null)
+
+                var hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                var dbUser = _db.Users.FirstOrDefault(x => x.Email == user.Email);
+
+                if(dbUser != null && BCrypt.Net.BCrypt.Verify(user.Password, dbUser.Password))
                 {
                     var tokenHandler = new JwtSecurityTokenHandler();
                     var token = tokenHandler.CreateToken(_jwt.GenerateToken(dbUser));

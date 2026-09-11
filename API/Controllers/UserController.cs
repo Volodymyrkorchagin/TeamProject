@@ -2,6 +2,7 @@ using API.DataBase;
 using API.Models;
 using API.Models.Database;
 using API.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +13,7 @@ using System.Text.Json;
 
 namespace API.Controllers
 {
+    [EnableCors]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase

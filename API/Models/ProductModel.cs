@@ -5,6 +5,8 @@ namespace API.Models
     public class ProductModel
     {
         public string Name { get; set; }
+        public string Unit { get; set; }
+        public decimal PortionSize { get; set; }
         public decimal Calories { get; set; }
         public decimal Proteins { get; set; }
         public decimal Fats { get; set; }

@@ -2,12 +2,14 @@
 using API.Models;
 using API.Models.Database;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
+    [EnableCors]
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
@@ -41,6 +43,8 @@ namespace API.Controllers
                     Proteins = product.Proteins,
                     Fats = product.Fats,
                     Carbs = product.Carbs,
+                    Unit = product.Unit,
+                    PortionSize = product.PortionSize,
                     UserId = int.Parse(userId)
                 };
 
@@ -69,6 +73,8 @@ namespace API.Controllers
             productToUpdate.Proteins = product.Proteins;
             productToUpdate.Fats = product.Fats;
             productToUpdate.Carbs = product.Carbs;
+            productToUpdate.Unit = product.Unit;
+            productToUpdate.PortionSize = product.PortionSize;
 
             _db.SaveChanges();
             return Ok(new { products = productToUpdate });

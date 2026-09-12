@@ -81,6 +81,10 @@ namespace API.Controllers
                         token = tokenString
                     });
                 }
+                else
+                {
+                    return BadRequest(new { message = "User with this email already exists." });
+                }
 
             }
             catch (Exception ex)

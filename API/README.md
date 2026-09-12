@@ -43,6 +43,15 @@
     dotnet add package Swashbuckle.AspNetCore --version 10.2.3
 ```
 
+после установки пакетов необходимо выполнить миграцию базы данных, для этого в консоли диспетчера пакетов выполнить команду:
+```
+    dotnet ef migrations add InitialCreate
+```
+```
+    dotnet ef database update
+```
+
+
 ## Запуск
 
 ```
